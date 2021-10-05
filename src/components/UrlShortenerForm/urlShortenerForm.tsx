@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import {
   UrlShortenerFormData,
   useCreateShortenedUrl,
 } from "../../mutations/useCreateShortenedUrl";
-import { Toast } from "react-bootstrap";
 import { useQueryClient } from "react-query";
 
 export function UrlShortenerForm() {
   const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState<UrlShortenerFormData>({
     url: "",
     short_url: "",
@@ -21,6 +22,7 @@ export function UrlShortenerForm() {
     mutate: createShortenedUrl,
     isSuccess: createShortenedUrlSuccess,
     isError: createShortenedUrlError,
+    error: createShortenedUrlErrorMessage,
   } = useCreateShortenedUrl(process.env.REACT_APP_API_KEY ?? "");
   const queryClient = useQueryClient();
 
@@ -28,13 +30,15 @@ export function UrlShortenerForm() {
     if (createShortenedUrlSuccess) {
       queryClient.invalidateQueries("getAllGeneratedUrls");
     }
-  }, [createShortenedUrlSuccess]);
+  }, [createShortenedUrlSuccess, queryClient]);
 
   useEffect(() => {
     if (createShortenedUrlError) {
       setShowErrorToast(true);
+      const error = createShortenedUrlErrorMessage as Error;
+      setErrorMessage(error.message);
     }
-  }, [createShortenedUrlError]);
+  }, [createShortenedUrlError, createShortenedUrlErrorMessage]);
 
   const handleSubmit = (event: {
     currentTarget: any;
@@ -51,58 +55,61 @@ export function UrlShortenerForm() {
   };
 
   return (
-    <Card>
-      <Toast show={showErrorToast} onClose={() => setShowErrorToast(false)}>
-        <Toast.Header>
-          <strong className="me-auto ErrorText">
-            Error Creating Short Url
-          </strong>
-        </Toast.Header>
-        <Toast.Body>Error encountered</Toast.Body>
-      </Toast>
-      <Card.Title className="ShortenUrlTitle">Shorten Your URL</Card.Title>
-      <Card.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Long URL</Form.Label>
-            <Form.Control
-              data-testid="LongUrlInput"
-              required
-              type="text"
-              placeholder="Long URL"
-              onChange={(event) =>
-                setFormData({ ...formData, url: event.target.value })
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Short URL</Form.Label>
-            <Form.Control
-              data-testid="ShortUrlInput"
-              required
-              type="text"
-              placeholder="Short URL"
-              onChange={(event) =>
-                setFormData({ ...formData, short_url: event.target.value })
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Slug</Form.Label>
-            <Form.Control
-              data-testid="SlugInput"
-              type="text"
-              placeholder="Slug (optional)"
-              onChange={(event) =>
-                setFormData({ ...formData, slug: event.target.value })
-              }
-            />
-          </Form.Group>
-          <div className="d-grid">
-            <Button type="submit">Submit</Button>
-          </div>
-        </Form>
-      </Card.Body>
-    </Card>
+    <>
+      <Card>
+        <Card.Title className="ShortenUrlTitle">Shorten Your URL</Card.Title>
+        <Card.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Long URL</Form.Label>
+              <Form.Control
+                data-testid="LongUrlInput"
+                required
+                type="text"
+                placeholder="Long URL"
+                onChange={(event) =>
+                  setFormData({ ...formData, url: event.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Short URL</Form.Label>
+              <Form.Control
+                data-testid="ShortUrlInput"
+                required
+                type="text"
+                placeholder="Short URL"
+                onChange={(event) =>
+                  setFormData({ ...formData, short_url: event.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Slug</Form.Label>
+              <Form.Control
+                data-testid="SlugInput"
+                type="text"
+                placeholder="Slug (optional)"
+                onChange={(event) =>
+                  setFormData({ ...formData, slug: event.target.value })
+                }
+              />
+            </Form.Group>
+            <div className="d-grid">
+              <Button type="submit">Submit</Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+      {showErrorToast && createShortenedUrlErrorMessage && (
+        <Alert
+          variant="danger"
+          onClose={() => setShowErrorToast(false)}
+          dismissible
+        >
+          {errorMessage}
+        </Alert>
+      )}
+    </>
   );
 }

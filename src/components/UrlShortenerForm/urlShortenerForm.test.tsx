@@ -74,7 +74,7 @@ describe("URLShortenerForm", () => {
       (useCreateShortenedUrl as jest.Mock).mockReturnValue({
         isLoading: false,
         isError: true,
-        error: undefined,
+        error: { message: "Error" },
         isSuccess: false,
         mutate: mutate,
       });

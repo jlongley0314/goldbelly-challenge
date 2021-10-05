@@ -24,7 +24,15 @@ export function useCreateShortenedUrl(accessToken: string) {
 
     if (!response.ok) {
       const error = await response.json();
-      throw error.error;
+      if (error.errors && Object.keys(error.errors)[0]) {
+        const errorKey = Object.keys(error.errors)[0];
+        const errorValue = Object.values(error.errors)[0];
+        const newError = new Error();
+        newError.message = `${errorKey} ${errorValue}`;
+        throw newError;
+      } else {
+        throw new Error("Something went wrong.");
+      }
     }
 
     return response;
