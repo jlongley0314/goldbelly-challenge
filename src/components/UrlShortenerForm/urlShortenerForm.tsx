@@ -5,8 +5,15 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useCreateShortenedUrl } from "../../mutations/useCreateShortenedUrl";
 
+type UrlShortenerFormData = {
+  longUrl: string;
+  shortUrl: string;
+  slug?: string;
+};
+
 export function UrlShortenerForm() {
   const [validated, setValidated] = useState(false);
+  const [formData, setFormData] = useState<UrlShortenerFormData>();
   const {
     mutate: createShortenedUrl,
     isSuccess: createShortenedUrlSuccess,
@@ -24,6 +31,8 @@ export function UrlShortenerForm() {
     }
 
     setValidated(true);
+
+    createShortenedUrl();
   };
   return (
     <Card>
