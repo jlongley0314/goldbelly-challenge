@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import "./HomeScreen.css";
 import Col from "react-bootstrap/Col";
-import { UrlShortenerForm } from "../components/UrlShortenerForm/urlShortnerForm";
+import { UrlShortenerForm } from "../components/UrlShortenerForm/urlShortenerForm";
 import { UrlTable } from "../components/UrlTable/urlTable";
 
 export function HomeScreen() {
