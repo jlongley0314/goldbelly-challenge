@@ -9,33 +9,6 @@ Object {
         class="card"
       >
         <div
-          aria-atomic="true"
-          aria-live="assertive"
-          class="fade toast show showing"
-          role="alert"
-        >
-          <div
-            class="toast-header"
-          >
-            <strong
-              class="me-auto ErrorText"
-            >
-              Error Creating Short Url
-            </strong>
-            <button
-              aria-label="Close"
-              class="btn-close"
-              data-dismiss="toast"
-              type="button"
-            />
-          </div>
-          <div
-            class="toast-body"
-          >
-            Error encountered
-          </div>
-        </div>
-        <div
           class="ShortenUrlTitle card-title h5"
         >
           Shorten Your URL
@@ -112,33 +85,6 @@ Object {
     <div
       class="card"
     >
-      <div
-        aria-atomic="true"
-        aria-live="assertive"
-        class="fade toast show showing"
-        role="alert"
-      >
-        <div
-          class="toast-header"
-        >
-          <strong
-            class="me-auto ErrorText"
-          >
-            Error Creating Short Url
-          </strong>
-          <button
-            aria-label="Close"
-            class="btn-close"
-            data-dismiss="toast"
-            type="button"
-          />
-        </div>
-        <div
-          class="toast-body"
-        >
-          Error encountered
-        </div>
-      </div>
       <div
         class="ShortenUrlTitle card-title h5"
       >

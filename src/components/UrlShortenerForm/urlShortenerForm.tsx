@@ -11,7 +11,6 @@ import { Toast } from "react-bootstrap";
 import { useQueryClient } from "react-query";
 
 export function UrlShortenerForm() {
-  const [validated, setValidated] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [formData, setFormData] = useState<UrlShortenerFormData>({
     url: "",
@@ -32,7 +31,9 @@ export function UrlShortenerForm() {
   }, [createShortenedUrlSuccess]);
 
   useEffect(() => {
-    setShowErrorToast(true);
+    if (createShortenedUrlError) {
+      setShowErrorToast(true);
+    }
   }, [createShortenedUrlError]);
 
   const handleSubmit = (event: {
@@ -46,7 +47,7 @@ export function UrlShortenerForm() {
     if (form.checkValidity()) {
       createShortenedUrl(formData);
     }
-    setValidated(true);
+    form.reset();
   };
 
   return (
@@ -61,7 +62,7 @@ export function UrlShortenerForm() {
       </Toast>
       <Card.Title className="ShortenUrlTitle">Shorten Your URL</Card.Title>
       <Card.Body>
-        <Form validated={validated} onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Long URL</Form.Label>
             <Form.Control
