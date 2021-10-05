@@ -68,13 +68,14 @@ describe("URLShortenerForm", () => {
   });
 
   describe("URLShortenerForm success", () => {
-    let mutate = jest.fn();
-    let invalidateQueries = jest.fn();
+    const mutate = jest.fn();
+    const invalidateQueries = jest.fn();
+    const errorMessage = "Error";
     beforeEach(() => {
       (useCreateShortenedUrl as jest.Mock).mockReturnValue({
         isLoading: false,
         isError: true,
-        error: { message: "Error" },
+        error: { message: errorMessage },
         isSuccess: false,
         mutate: mutate,
       });
@@ -82,8 +83,8 @@ describe("URLShortenerForm", () => {
       render(<UrlShortenerForm />);
     });
 
-    it("should render the error toast when isError is true", () => {
-      expect(screen.getByText("Error Creating Short Url")).toBeInTheDocument();
+    it("should render the error toast with error message when isError is true", () => {
+      expect(screen.getByText(errorMessage)).toBeInTheDocument();
     });
   });
 });

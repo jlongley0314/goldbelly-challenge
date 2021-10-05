@@ -96,14 +96,32 @@ Object {
               class="card"
             >
               <div
-                class="card-title h5"
+                class="UrlTableHeader card-title h5"
               >
                 Your URLs
               </div>
               <div
                 class="card-body"
               >
-                URL table
+                <table
+                  class="table table-striped table-bordered table-hover"
+                >
+                  <thead>
+                    <tr>
+                      <th>
+                        Long Url
+                      </th>
+                      <th>
+                        Short Url
+                      </th>
+                      <th>
+                        Slug
+                      </th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody />
+                </table>
               </div>
             </div>
           </div>
@@ -203,14 +221,32 @@ Object {
             class="card"
           >
             <div
-              class="card-title h5"
+              class="UrlTableHeader card-title h5"
             >
               Your URLs
             </div>
             <div
               class="card-body"
             >
-              URL table
+              <table
+                class="table table-striped table-bordered table-hover"
+              >
+                <thead>
+                  <tr>
+                    <th>
+                      Long Url
+                    </th>
+                    <th>
+                      Short Url
+                    </th>
+                    <th>
+                      Slug
+                    </th>
+                    <th />
+                  </tr>
+                </thead>
+                <tbody />
+              </table>
             </div>
           </div>
         </div>
