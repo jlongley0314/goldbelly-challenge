@@ -3,15 +3,25 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { useGetAllGeneratedUrls } from "../../queries/useGetAllGeneratedUrls";
-import { UrlShortenerFormData } from "../../mutations/useCreateShortenedUrl";
+import { useDeleteUrlBySlug } from "../../mutations/useDeleteUrlBySlug";
+
+type UrlShortenerDataResponse = {
+  url: string;
+  short_url: string;
+  slug: string;
+};
 
 export function UrlTable() {
   const getAllGeneratedUrlsQuery = useGetAllGeneratedUrls(
     process.env.REACT_APP_API_KEY ?? ""
   );
 
-  function handleUrlDelete(url: string) {
-    console.log("delete click for url", url);
+  const { mutate: deleteUrl } = useDeleteUrlBySlug(
+    process.env.REACT_APP_API_KEY ?? ""
+  );
+
+  function handleUrlDelete(slug: string) {
+    deleteUrl(slug);
   }
 
   return (
@@ -30,16 +40,16 @@ export function UrlTable() {
           <tbody>
             {getAllGeneratedUrlsQuery.isSuccess &&
               getAllGeneratedUrlsQuery.data.map(
-                (data: UrlShortenerFormData) => {
+                (data: UrlShortenerDataResponse) => {
                   return (
                     <tr>
                       <td>{data.url}</td>
                       <td>{data.short_url}</td>
-                      <td>{data.slug ?? ""}</td>
+                      <td>{data.slug}</td>
                       <td>
                         <Button
                           variant="secondary"
-                          onClick={() => handleUrlDelete(data.short_url)}
+                          onClick={() => handleUrlDelete(data.slug)}
                         >
                           Delete
                         </Button>
